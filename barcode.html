@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Códigos de Barras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { background: linear-gradient(135deg,#ffea00 40%,#00ff99 100%); font-family:sans-serif; min-height:100vh; margin:0; display:flex; flex-direction:column; align-items:center; }
+    .barcode-title { font-size:2em; margin:40px 0 20px 0; font-weight:bold; color:#181818; }
+    .barcode-form { background:#fff3; border-radius:18px; padding:24px 18px; margin-bottom:30px; }
+    .barcode-input { font-size:1.2em; padding:10px; border-radius:10px; border:1px solid #00eaff; margin-bottom:12px; width:220px; }
+    .barcode-btn { font-size:1.1em; padding:10px 28px; border-radius:10px; border:none; background:#00ff99; color:#181818; font-weight:bold; cursor:pointer; }
+    .barcode-btn:hover { background:#ffea00; }
+    .barcode-result { margin-top:20px; }
+    #barcode { margin-top:10px; }
+    @media (max-width:600px){
+      .barcode-title{font-size:1.2em;}
+      .barcode-form{padding:10px 4px;}
+      .barcode-input{font-size:1em;width:96vw;max-width:220px;}
+      .barcode-btn{font-size:1em;padding:10px 10px;}
+      #barcode{width:180px !important; height:60px !important;}
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+  <div class="barcode-title">Generador de Códigos de Barras 🏷️</div>
+  <form class="barcode-form" onsubmit="event.preventDefault(); generarBarcode();">
+    <input class="barcode-input" id="barcodeText" type="text" maxlength="20" placeholder="Texto o número">
+    <button class="barcode-btn" type="submit">Generar Código</button>
+  </form>
+  <div class="barcode-result" id="barcodeResult"></div>
+  <button class="barcode-btn" onclick="window.history.back()">⬅ Volver</button>
+  <script>
+    function generarBarcode() {
+      const text = document.getElementById('barcodeText').value.trim() || "1234567890";
+      document.getElementById('barcodeResult').innerHTML = `<svg id="barcode"></svg>`;
+      // Taille adaptée pour mobile
+      let width = window.innerWidth < 600 ? 1.5 : 2;
+      let height = window.innerWidth < 600 ? 60 : 80;
+      JsBarcode("#barcode", text, {format:"CODE128", lineColor:"#181818", width:width, height:height, displayValue:true});
+    }
+  </script>
+</body>
+</html>

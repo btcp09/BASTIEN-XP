@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Cuentas Gmail</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { background: linear-gradient(135deg,#ffea00 40%,#00eaff 100%); font-family:sans-serif; min-height:100vh; margin:0; display:flex; flex-direction:column; align-items:center; }
+    .gmail-title { font-size:2em; margin:40px 0 20px 0; font-weight:bold; color:#181818; }
+    .gmail-form { background:#fff3; border-radius:18px; padding:24px 18px; margin-bottom:30px; }
+    .gmail-input { font-size:1.2em; padding:10px; border-radius:10px; border:1px solid #00eaff; margin-bottom:12px; width:220px; }
+    .gmail-btn { font-size:1.1em; padding:10px 28px; border-radius:10px; border:none; background:#00eaff; color:#181818; font-weight:bold; cursor:pointer; }
+    .gmail-btn:hover { background:#ffea00; }
+    .gmail-result { margin-top:20px; font-size:1.2em; color:#181818; background:#fff8; border-radius:10px; padding:10px 18px; }
+    @media (max-width:600px){
+      .gmail-title{font-size:1.2em;}
+      .gmail-form{padding:10px 4px;}
+      .gmail-input{font-size:1em;width:96vw;max-width:320px;}
+      .gmail-btn{font-size:1em;padding:10px 10px;}
+      .gmail-result{font-size:1em;padding:8px 6px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="gmail-title">Generador de Cuentas Gmail 📧</div>
+  <form class="gmail-form" onsubmit="event.preventDefault(); generarGmail();">
+    <input class="gmail-input" id="gmailName" type="text" maxlength="20" placeholder="Nombre de usuario">
+    <button class="gmail-btn" type="submit">Generar Gmail</button>
+  </form>
+  <div class="gmail-result" id="gmailResult"></div>
+  <button class="gmail-btn" onclick="window.history.back()">⬅ Volver</button>
+  <script>
+    function generarGmail() {
+      const name = document.getElementById('gmailName').value.trim().replace(/\s+/g,'').toLowerCase() || "usuario";
+      const rand = Math.floor(Math.random()*9000+1000);
+      const gmail = name + rand + "@gmail.com";
+      document.getElementById('gmailResult').innerText = gmail;
+      navigator.clipboard.writeText(gmail);
+    }
+  </script>
+</body>
+</html>

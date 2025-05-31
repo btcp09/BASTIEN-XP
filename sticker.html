@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Stickers para WhatsApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #181818 60%, #00eaff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+    }
+    .sticker-title {
+      font-size: 2.2em;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 38px 0 18px 0;
+      text-align: center;
+      background: linear-gradient(90deg, #00eaff, #ffea00, #ff69b4);
+      background-size: 400% 400%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbow 3s linear infinite;
+      text-shadow: 0 0 18px #00eaff99, 0 0 32px #ff69b4aa;
+    }
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .sticker-form {
+      background: rgba(30,30,40,0.92);
+      border-radius: 22px;
+      box-shadow: 0 0 32px #00eaff55, 0 0 8px #ff69b455;
+      padding: 28px 18px 18px 18px;
+      max-width: 370px;
+      width: 95vw;
+      margin: 0 auto 32px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    .sticker-input {
+      padding: 18px;
+      margin: 10px 0 18px 0;
+      width: 90%;
+      font-size: 1.2em;
+      border-radius: 14px;
+      border: 2px solid #00eaff55;
+      background: rgba(35,35,50,0.92);
+      color: #fff;
+      outline: none;
+      box-sizing: border-box;
+      box-shadow: 0 0 8px #00eaff33;
+      transition: box-shadow 0.2s, border 0.2s;
+      text-align: center;
+    }
+    .sticker-input:focus {
+      box-shadow: 0 0 16px #ff69b4cc;
+      border: 2px solid #ff69b4;
+    }
+    .sticker-btn {
+      padding: 14px 38px;
+      font-size: 1.15em;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(90deg,#00eaff,#ff69b4,#ffea00);
+      color: #181818;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 10px;
+      margin-top: 8px;
+      box-shadow: 0 0 10px #00eaff44;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .sticker-btn:hover {
+      background: #ff69b4;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    .sticker-result {
+      margin: 30px auto 0 auto;
+      text-align: center;
+    }
+    .sticker-img {
+      margin-top: 18px;
+      max-width: 220px;
+      max-height: 220px;
+      border-radius: 18px;
+      box-shadow: 0 0 18px #00eaff99, 0 0 32px #ffea00aa;
+      background: #fff;
+    }
+    .back-btn {
+      margin-top: 20px;
+      padding: 14px 38px;
+      font-size: 1.1em;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(90deg,#00eaff,#ff69b4,#ffea00);
+      color: #181818;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00eaff44;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .back-btn:hover {
+      background: #ff69b4;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      .sticker-title { font-size: 1.3em; }
+      .sticker-form { padding: 12px 4px 12px 4px; }
+      .sticker-input { font-size: 1em; padding: 10px; }
+      .sticker-btn { font-size: 1em; padding: 10px 18px; }
+      .sticker-img { max-width: 320px; max-height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sticker-title">Generador de Stickers para WhatsApp 🟩</div>
+  <form class="sticker-form" onsubmit="event.preventDefault(); generarSticker();">
+    <input class="sticker-input" type="file" id="stickerFile" accept="image/*">
+    <button class="sticker-btn" type="submit">Crear Sticker</button>
+  </form>
+  <div class="sticker-result" id="stickerResult"></div>
+  <button class="back-btn" onclick="window.history.back()">⬅ Volver</button>
+  <script>
+    function generarSticker() {
+      const fileInput = document.getElementById('stickerFile');
+      const result = document.getElementById('stickerResult');
+      result.innerHTML = "";
+      if (!fileInput.files.length) {
+        result.innerHTML = "<span style='color:#ffea00'>Por favor, selecciona una imagen.</span>";
+        return;
+      }
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = "sticker-img";
+        img.alt = "Sticker";
+        result.appendChild(img);
+
+        // Botón de descarga
+        const dl = document.createElement('a');
+        dl.href = img.src;
+        dl.download = "sticker.png";
+        dl.innerText = "Descargar Sticker";
+        dl.className = "sticker-btn";
+        dl.style.marginTop = "18px";
+        result.appendChild(document.createElement("br"));
+        result.appendChild(dl);
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>

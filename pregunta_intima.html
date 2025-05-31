@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pregunta Íntima</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html { font-size: 18px; }
+    body {
+      background: #181818;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+    }
+    .fade-in {
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.7s;
+    }
+    .modal {
+      background: linear-gradient(120deg,#ff69b4 30%,#00eaff 70%);
+      color: #181818;
+      border-radius: 18px;
+      padding: 38px 28px 28px 28px;
+      box-shadow: 0 0 30px #000a;
+      text-align: center;
+      max-width: 90vw;
+      font-size: 1.3em;
+      font-weight: bold;
+      animation: fadeIn 0.7s;
+    }
+    .modal-btns {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+    }
+    .modal-btn {
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 12px 32px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: #fff;
+      color: #181818;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      box-shadow: 0 0 10px #0004;
+    }
+    .modal-btn:hover {
+      background: #181818;
+      color: #fff;
+      transform: scale(1.07);
+    }
+    .title-anim {
+      margin-top: 60px;
+      margin-bottom: 36px;
+      font-size: 2.2em;
+      font-weight: bold;
+      background: linear-gradient(90deg,#ff69b4,#00eaff,#ffea00,#00ff99);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      letter-spacing: 1px;
+      animation: fadeIn 1.2s;
+    }
+    .generer-btn {
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 18px 48px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(90deg,#ff69b4,#00eaff,#ffea00,#00ff99);
+      color: #181818;
+      box-shadow: 0 0 10px #0004;
+      cursor: pointer;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      animation: fadeIn 1.2s;
+    }
+    .generer-btn:hover {
+      background: #ff69b4;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    .question-box {
+      background: #232323;
+      color: #00eaff;
+      border-radius: 14px;
+      padding: 30px 18px;
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 18px;
+      margin-top: 18px;
+      box-shadow: 0 0 16px #00eaff44;
+      animation: fadeIn 0.7s;
+      word-break: break-word;
+      text-align: center;
+    }
+    .copy-btn {
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 14px 38px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg,#ff69b4,#00eaff,#ffea00,#00ff99);
+      color: #181818;
+      cursor: pointer;
+      margin-bottom: 18px;
+      margin-top: 8px;
+      box-shadow: 0 0 10px #0004;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      animation: fadeIn 0.7s;
+    }
+    .copy-btn:hover {
+      background: #00eaff;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      html { font-size: 15px; }
+      .title-anim { font-size: 1.2em; }
+      .generer-btn { font-size: 1em; padding: 10px 18px; }
+      .question-box { font-size: 1em; padding: 14px 8px; }
+      .copy-btn { font-size: 1em; padding: 8px 10px; }
+      .modal { font-size: 1em; padding: 18px 8px 18px 8px;}
+    }
+    @media (max-width: 400px) {
+      html { font-size: 13px; }
+      .title-anim { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="title-anim">Pregunta Íntima</div>
+  <div id="mainContent">
+    <button class="generer-btn fade-in" id="genererBtn">Generar</button>
+  </div>
+  <div id="modalAge" class="modal-bg" style="display:flex;">
+    <div class="modal">
+      ¿Tienes más de 18 años?
+      <div class="modal-btns">
+        <button class="modal-btn" id="btnSi">Sí</button>
+        <button class="modal-btn" id="btnNo">No</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Animation d'entrée
+    document.body.classList.add('fade-in');
+
+    // Gestion de l'âge
+    const modal = document.getElementById('modalAge');
+    document.getElementById('btnSi').onclick = function() {
+      modal.style.display = "none";
+    };
+    document.getElementById('btnNo').onclick = function() {
+      window.history.back();
+    };
+
+    // Questions intimes (beaucoup plus, variées, sans filtre)
+    const questions = [
+        "¿Te has masturbado pensando en mí? ¿Cuándo fue la última vez?",
+    "¿Te gustaría hacer un trío conmigo y otra persona? ¿Con quién?",
+    "¿Cuál es la parte de tu cuerpo más sensible al placer?",
+    "¿Te excita la idea de vernos desnudos en público?",
+    "¿Has tenido sexo anal? ¿Te gustaría probarlo?",
+    "¿Te gustaría que te diera sexo oral durante mucho tiempo?",
+    "¿Has tenido sexo sin protección? ¿Cómo fue la experiencia?",
+    "¿Te gustaría que te amarre a la cama y te haga lo que quiera?",
+    "¿Te excita la idea de que te miren mientras tienes sexo?",
+    "¿Te gustaría que te susurre cosas sucias mientras te toco?",
+    "¿Te gustaría que te penetre en diferentes posiciones hasta que no puedas más?",
+    "¿Te gustaría que te haga llegar al orgasmo varias veces seguidas?",
+    "¿Te gustaría que te tome fuerte y sin avisar?",
+    "¿Te gustaría que te bese y te toque en lugares públicos?",
+    "¿Te gustaría que te envíe fotos íntimas mías?",
+    "¿Te gustaría que te grabe mientras tenemos sexo?",
+    "¿Te gustaría que te haga sexo oral hasta que pierdas el control?",
+    "¿Te gustaría que te haga el amor en el baño, la cocina o el auto?",
+    "¿Te gustaría que te hable sucio al oído mientras te penetro?",
+    "¿Te gustaría que te haga gemir tan fuerte que los vecinos escuchen?",
+    "¿Te gustaría que te haga un masaje erótico con aceites por todo tu cuerpo desnudo?",
+    "¿Te gustaría que te penetre mientras te miro a los ojos?",
+    "¿Te gustaría que te haga el amor en un lugar prohibido?",
+    "¿Te gustaría que te haga llegar al orgasmo solo con mis dedos?",
+    "¿Te gustaría que te haga sexo oral mientras te miro fijamente?",
+    "¿Te gustaría que te penetre por detrás mientras te susurro cosas calientes?",
+    "¿Te gustaría que te haga el amor toda la noche sin parar?",
+    "¿Te gustaría que te haga llegar al orgasmo en diferentes lugares de la casa?",
+    "¿Te gustaría que te haga el amor en la ducha mientras el agua cae sobre nosotros?",
+    "¿Te gustaría que te haga el amor mientras escuchamos música sensual?",
+      "¿Cuál es tu mayor fantasía sexual que aún no has cumplido?",
+      "¿Has fingido alguna vez un orgasmo? ¿Por qué?",
+      "¿Te consideras una persona dominante o sumisa en la cama?",
+      "¿Cuál ha sido tu experiencia sexual más satisfactoria?",
+      "¿Qué parte de tu cuerpo te gusta más que te besen?",
+      "¿Has tenido sexo en un lugar público? ¿Dónde?",
+      "¿Qué piensas sobre los juguetes sexuales en pareja?",
+      "¿Te gustaría probar algo nuevo en la cama? ¿Qué sería?",
+      "¿Cuándo perdiste tu virginidad y cómo fue?",
+      "¿Prefieres sexo suave o más intenso?",
+      "¿Qué es lo que más te excita de tu pareja?",
+      "¿Te gustaría tener una experiencia a tres?",
+      "¿Has tenido sueños eróticos con alguien inesperado?",
+      "¿Qué importancia le das a la satisfacción sexual en la relación?",
+      "¿Qué fantasía te gustaría cumplir conmigo?",
+      "¿Has sentido celos de alguna ex pareja mía?",
+      "¿Te gusta hablar sucio durante el sexo?",
+      "¿Qué opinas sobre el sexo oral?",
+      "¿Cuál es tu postura favorita?",
+      "¿Qué es lo más loco que has hecho por deseo?",
+      "¿Te gustaría que te ataran o atar a tu pareja?",
+      "¿Qué piensas sobre la masturbación en pareja?",
+      "¿Te consideras una persona con mucha o poca libido?",
+      "¿Qué es lo que más valoras en la intimidad?",
+      "¿Te gustaría experimentar con roles o disfraces?",
+      "¿Qué te gustaría mejorar en nuestra vida sexual?",
+      "¿Te has sentido insatisfecho/a alguna vez? ¿Por qué?",
+      "¿Qué te hace sentir más deseado/a?",
+      "¿Qué opinas sobre el sexo matutino?",
+      "¿Qué fantasía nunca contarías a nadie?",
+      "¿Te gustaría hacer un striptease para mí o que yo te lo haga?",
+      "¿Cuál es el lugar más atrevido donde te gustaría hacerlo?",
+      "¿Has tenido sexo telefónico o por videollamada?",
+      "¿Te gustaría que te susurrara cosas calientes al oído?",
+      "¿Qué prenda te gustaría que me quitara primero?",
+      "¿Te excita la idea de ser observado/a?",
+      "¿Qué parte de mi cuerpo te gustaría explorar más?",
+      "¿Te gustaría probar sexo en la ducha o bañera?",
+      "¿Has tenido sexo sin amor? ¿Cómo fue?",
+      "¿Qué te gustaría que hiciera para darte más placer?",
+      "¿Cuál es tu recuerdo más caliente conmigo?",
+      "¿Te gustaría que te sorprendiera con algo atrevido?",
+      "¿Qué palabra te excita más escuchar durante el sexo?",
+      "¿Has tenido alguna fantasía con alguien del mismo sexo?",
+      "¿Te gustaría que te diera un masaje sensual?",
+      "¿Qué piensas sobre los juegos previos largos?",
+      "¿Te gustaría probar sexo en la naturaleza?",
+      "¿Qué harías si te despertaras con ganas de sexo?",
+      "¿Te gustaría que te vendaran los ojos en la cama?",
+      "¿Qué piensas sobre el sexo espontáneo?",
+      "¿Te gustaría que te grabara mientras lo hacemos?",
+      "¿Qué harías si te pidiera cumplir una fantasía loca?",
+      "¿Te gustaría que te susurrara tus fantasías al oído?",
+      "¿Qué te gustaría que te hiciera con la boca?",
+      "¿Te gustaría que te sorprendiera en un lugar inesperado?",
+      "¿Qué te gustaría experimentar que nunca te has atrevido a pedir?",
+      "¿Te gustaría que te dominara o dominarme?",
+      "¿Qué piensas sobre los juegos con comida en la cama?",
+      "¿Te gustaría tener sexo en un sitio público?",
+      "¿Qué te gustaría que te dijera mientras hacemos el amor?",
+      "¿Te gustaría que te atara las manos?",
+      "¿Qué te gustaría que te hiciera cuando estés a punto de llegar al orgasmo?",
+      "¿Te gustaría que te diera placer solo con mis manos?",
+      "¿Qué piensas sobre el sexo rápido y apasionado?",
+      "¿Te gustaría que te sorprendiera con un juguete nuevo?",
+      "¿Qué fantasía te gustaría cumplir esta semana?",
+      "¿Te gustaría que te besara todo el cuerpo lentamente?",
+      "¿Qué harías si te propongo una noche sin límites?",
+      "¿Te gustaría que te susurrara cosas prohibidas?",
+      "¿Qué parte de tu cuerpo te gustaría que explorara más?",
+      "¿Te gustaría que te despertara con caricias íntimas?",
+      "¿Qué te gustaría que te hiciera en un hotel?",
+      "¿Te gustaría probar algo salvaje conmigo?",
+      "¿Qué te gustaría que te hiciera si estuviéramos solos en una isla?",
+      "¿Te gustaría que te sorprendiera con una cita erótica?",
+      "¿Qué harías si te propongo un juego de roles atrevido?",
+      "¿Te gustaría que te diera placer en un lugar inesperado?",
+      "¿Qué harías si te pidiera cumplir mi mayor fantasía?",
+      "¿Te gustaría que te hiciera el amor de una forma diferente?",
+      "¿Qué te gustaría que te hiciera mientras te miro a los ojos?",
+      "¿Te gustaría que te sorprendiera con un regalo íntimo?",
+      "¿Qué harías si te propongo una noche de pasión sin reglas?",
+      "¿Te gustaría que te besara en lugares prohibidos?",
+      "¿Qué te gustaría que te hiciera mientras escuchamos música sensual?",
+      "¿Te gustaría que te diera un baño sensual?",
+      "¿Qué harías si te propongo una aventura sexual fuera de casa?",
+      "¿Te gustaría que te sorprendiera con un masaje erótico?",
+      "¿Qué te gustaría que te hiciera en la oscuridad total?",
+      "¿Te gustaría que te susurrara tus deseos más secretos?",
+      "¿Qué harías si te propongo una noche de juegos íntimos?",
+      "¿Te gustaría que te sorprendiera con una fantasía nueva cada semana?",
+      "¿Qué te gustaría que te hiciera mientras estamos de viaje?",
+      "¿Te gustaría que te sorprendiera con una experiencia inolvidable en la cama?"
+    ];
+    let usedIndexes = [];
+
+    function getRandomQuestion() {
+      if (usedIndexes.length === questions.length) usedIndexes = [];
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * questions.length);
+      } while (usedIndexes.includes(idx));
+      usedIndexes.push(idx);
+      return questions[idx];
+    }
+
+    const mainContent = document.getElementById('mainContent');
+    let currentQuestion = "";
+
+    function showQuestion() {
+      mainContent.innerHTML = "";
+      currentQuestion = getRandomQuestion();
+      const qBox = document.createElement('div');
+      qBox.className = "question-box fade-in";
+      qBox.textContent = currentQuestion;
+      mainContent.appendChild(qBox);
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = "copy-btn fade-in";
+      copyBtn.textContent = "Copiar";
+      copyBtn.onclick = function() {
+        navigator.clipboard.writeText(currentQuestion);
+        showGenererBtn();
+      };
+      mainContent.appendChild(copyBtn);
+    }
+
+    function showGenererBtn() {
+      mainContent.innerHTML = "";
+      const genBtn = document.createElement('button');
+      genBtn.className = "generer-btn fade-in";
+      genBtn.textContent = "Generar";
+      genBtn.onclick = showQuestion;
+      mainContent.appendChild(genBtn);
+    }
+
+    document.getElementById('genererBtn').onclick = showQuestion;
+  </script>
+</body><audio id="audio2" src="https://files.catbox.moe/os7lz1.m4a" autoplay loop></audio>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Recepción de SMS Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  body { background: linear-gradient(135deg,#00ff99 40%,#ffea00 100%); font-family:sans-serif; min-height:100vh; margin:0; display:flex; flex-direction:column; align-items:center; }
+  .sms-title { font-size:2em; margin:40px 0 20px 0; font-weight:bold; color:#181818; }
+  .sms-info { background:#fff3; border-radius:18px; padding:24px 18px; margin-bottom:30px; font-size:1.1em; color:#181818; }
+  .sms-list { margin-top:20px; }
+  .sms-number {
+    font-size:1.3em;
+    background:#fff8;
+    border-radius:10px;
+    padding:10px 18px;
+    margin:10px 0;
+    color:#181818;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  @media (max-width:600px){
+    .sms-title{font-size:1.2em;}
+    .sms-info{padding:10px 4px; font-size:1em;}
+    .sms-number{font-size:1em; padding:8px 6px;}
+  }
+</style>
+</head>
+<body>
+  <div class="sms-title">Recepción de SMS Online 📲</div>
+  <div class="sms-info">
+    Usa uno de estos números públicos para recibir SMS de verificación.<br>
+    <b>Ejemplo:</b> +1 234 567 8901<br>
+    <b>Nota:</b> Los mensajes recibidos aquí son públicos y temporales.
+  </div>
+  <div class="sms-list">
+    <div class="sms-number">+1 234 567 8901</div>
+    <div class="sms-number">+44 1234 567890</div>
+    <div class="sms-number">+33 612 345 678</div>
+    <div class="sms-number">+49 1512 3456789</div>
+    <div class="sms-number">+34 612 345 678</div>
+  </div>
+  <button class="sms-title" style="font-size:1em;" onclick="window.history.back()">⬅ Volver</button>
+</body>
+</html>
